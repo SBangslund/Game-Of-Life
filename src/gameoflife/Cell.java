@@ -57,6 +57,34 @@ public class Cell {
     }
 
     /**
+     * Fill the cell.
+     * @param gc the GraphicContext object.
+     */
+    public void fillCell(GraphicsContext gc) {
+        gc.setFill(Color.BLACK);
+        gc.fillRect(getGlobalX(), getGlobalY(), getSize(), getSize());
+
+        isFilled = true;
+        gc.restore();
+    }
+
+    /**
+     * Empties the cell.
+     * @param gc the GraphicsContext object.
+     */
+    public void emptyCell(GraphicsContext gc) {
+        gc.setFill(Color.WHITE);
+        gc.fillRect(getGlobalX(), getGlobalY(), getSize(), getSize());
+
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(0.1);
+        gc.strokeRect(getGlobalX(), getGlobalY(), getSize(), getSize());
+
+        isFilled = false;
+        gc.restore();
+    }
+    
+    /**
      * Converts the cell depending on if the cell is marked for fill or not.
      * @param gc the GraphicsContext object.
      */
@@ -107,32 +135,6 @@ public class Cell {
      */
     public void markForEmpty() {
         markedFilled = false;
-    }
-
-    /**
-     * Fill the cell.
-     * @param gc the GraphicContext object.
-     */
-    public void fillCell(GraphicsContext gc) {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(getGlobalX(), getGlobalY(), getSize(), getSize());
-
-        isFilled = true;
-    }
-
-    /**
-     * Empties the cell.
-     * @param gc the GraphicsContext object.
-     */
-    public void emptyCell(GraphicsContext gc) {
-        gc.setFill(Color.WHITE);
-        gc.fillRect(getGlobalX(), getGlobalY(), getSize(), getSize());
-
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(0.1);
-        gc.strokeRect(getGlobalX(), getGlobalY(), getSize(), getSize());
-
-        isFilled = false;
     }
 
     // Setters

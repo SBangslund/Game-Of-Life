@@ -113,9 +113,9 @@ public class GameOfLife extends Application {
                     Cell cell = cells[(int) Math.floor(t.getY() / CELL_SIZE)][(int) Math.floor(t.getX() / CELL_SIZE)];
 
                     if (cell.isFilled) {
-                        emptyDot(cell);
+                        cell.emptyCell(gc);
                     } else {
-                        drawDot(cell);
+                        cell.fillCell(gc);
                     }
                 }
             }
@@ -140,25 +140,28 @@ public class GameOfLife extends Application {
             }
         }
     }
+    
+    
 
     /**
-     * Fills in the given box.
-     *
-     * @param cell to fill in.
+     * The main loop of the program. From here all the cells are checked for
+     * changes and then converted depending on their markings.
      */
-    void drawDot(Cell cell) {
-        cell.fillCell(gc);  // Fill the cell.
-        gc.restore();       // Update.
-    }
+    void drawLoop() {
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (running) {
+                    if (count % GENERATION_SPEED == 0) {
+                        checkCells();
+                        convertCells();
 
-    /**
-     * Empties the given box.
-     *
-     * @param cell to empty.
-     */
-    void emptyDot(Cell cell) {
-        cell.emptyCell(gc); // Empty the cell.
-        gc.restore();       // Update.
+                        gc.restore();
+                    }
+                    count++;
+                }
+            }
+        }.start();
     }
 
     /**
@@ -203,27 +206,6 @@ public class GameOfLife extends Application {
             }
         }
         convertCells();
-    }
-
-    /**
-     * The main loop of the program. From here all the cells are checked for
-     * changes and then converted depending on their markings.
-     */
-    void drawLoop() {
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (running) {
-                    if (count % GENERATION_SPEED == 0) {
-                        checkCells();
-                        convertCells();
-
-                        gc.restore();
-                    }
-                    count++;
-                }
-            }
-        }.start();
     }
 
     /**
