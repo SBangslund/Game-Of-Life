@@ -11,9 +11,6 @@ import javafx.scene.paint.Color;
  * individually.
  */
 public class Cell {
-
-    int boxWidth    = 5;    // Width of the cell.
-    int boxHeight   = 5;    // Height of the cell.
     int xPos        = 0;    // The xPosition of the cell. (In px)
     int yPos        = 0;    // The yPosition of the cell. (In px)
 
@@ -30,9 +27,6 @@ public class Cell {
      * @param y position of the cell. (In px)
      */
     public Cell(int width, int height, int x, int y) {
-        setWidth(width);
-        setHeight(height);
-
         setXPos(x);
         setYPos(y);
 
@@ -88,7 +82,7 @@ public class Cell {
                 if (y == getLocalY() && x == getLocalX()) {
                 
                 // Ignore if the cell to check is out of limits.
-                } else if (y < 0 || y > canvas.getHeight() / boxHeight - 1 || x < 0 || x > canvas.getWidth() / boxWidth - 1) {
+                } else if (y < 0 || y > canvas.getHeight() / getSize() - 1 || x < 0 || x > canvas.getWidth() / getSize() - 1) {
                 } else {
                     // Increments the number of neighbours if a live cell is
                     // found among the checked cells.
@@ -121,7 +115,7 @@ public class Cell {
      */
     public void fillCell(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
-        gc.fillRect(getGlobalX(), getGlobalY(), getWidth(), getHeight());
+        gc.fillRect(getGlobalX(), getGlobalY(), getSize(), getSize());
 
         isFilled = true;
     }
@@ -132,22 +126,16 @@ public class Cell {
      */
     public void emptyCell(GraphicsContext gc) {
         gc.setFill(Color.WHITE);
-        gc.fillRect(getGlobalX(), getGlobalY(), getWidth(), getHeight());
+        gc.fillRect(getGlobalX(), getGlobalY(), getSize(), getSize());
 
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(0.1);
-        gc.strokeRect(getGlobalX(), getGlobalY(), getWidth(), getHeight());
+        gc.strokeRect(getGlobalX(), getGlobalY(), getSize(), getSize());
 
         isFilled = false;
     }
 
     // Setters
-    private void setWidth(int width) {
-        boxWidth = (width > 2) ? width : boxWidth;
-    }
-    private void setHeight(int height) {
-        boxHeight = (height > 2) ? height : boxHeight;
-    }
     private void setXPos(int x) {
         xPos = x;
     }
@@ -156,12 +144,6 @@ public class Cell {
     }
 
     // Getters
-    int getWidth() {
-        return boxWidth;
-    }
-    int getHeight() {
-        return boxHeight;
-    }
     int getGlobalX() {
         return xPos;
     }
@@ -169,9 +151,12 @@ public class Cell {
         return yPos;
     }
     int getLocalX() {
-        return xPos / boxWidth;
+        return xPos / GameOfLife.CELL_SIZE;
     }
     int getLocalY() {
-        return yPos / boxHeight;
+        return yPos / GameOfLife.CELL_SIZE;
+    }
+    int getSize() {
+        return GameOfLife.CELL_SIZE;
     }
 }
