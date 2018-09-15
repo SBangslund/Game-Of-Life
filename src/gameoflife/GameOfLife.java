@@ -26,9 +26,8 @@ public class GameOfLife extends Application {
     static Cell[][] cells;  // Where we will store all the cells as a grid.
 
     int count           = 0;    // Used for the delay between each generation.
-    int cellWidth       = 10;   // Width of the cells.
-    int cellHeight      = 10;   // Height of the cells.
-    int generationSpeed = 8;    // The time between each generation. (Depends on the system speed)
+    byte cellSize       = 8;   // Size of the cells.
+    int generationSpeed = 5;    // The time between each generation. (Depends on the system speed)
 
     static boolean running = false; // Whether or not the program should continue on to the next generation.
 
@@ -55,13 +54,13 @@ public class GameOfLife extends Application {
         resetButton.setTranslateX(55);      // The reset button should not be on top of the other button.
 
         // Create necessary JavaFX components for the simulation.
-        root = new Group();             // The group of where we will store our components.
-        canvas = new Canvas(1000, 600); // The canvas to draw on. This will also act as the window.
+        root = new Group();              // The group of where we will store our components.
+        canvas = new Canvas(600, 600); // The canvas to draw on. This will also act as the window.
         gc = canvas.getGraphicsContext2D(); // A class to draw shapes.
 
         // Create the cell array - with a length based on the
         // window resolution and the cell size (width and height)
-        cells = new Cell[(int) (canvas.getHeight() / cellWidth)][(int) (canvas.getWidth() / cellHeight)];
+        cells = new Cell[(int) (canvas.getHeight() / cellSize)][(int) (canvas.getWidth() / cellSize)];
 
         
         drawGrid();   // Draw the initial grid.
@@ -111,7 +110,7 @@ public class GameOfLife extends Application {
             @Override
             public void handle(MouseEvent t) {
                 if (t.getClickCount() > 0) {
-                    Cell cell = cells[(int) Math.floor(t.getY() / cellWidth)][(int) Math.floor(t.getX() / cellHeight)];
+                    Cell cell = cells[(int) Math.floor(t.getY() / cellSize)][(int) Math.floor(t.getX() / cellSize)];
 
                     if (cell.isFilled) {
                         emptyDot(cell);
@@ -134,10 +133,10 @@ public class GameOfLife extends Application {
         // Iterates through all the cell coordinates and then proceeds to draw
         // a box around the cell, effectively creating a grid. After each draw,
         // the cell is then added to the cells[][] array.
-        for (int y = 0; y < canvas.getHeight() / cellHeight; y++) {
-            for (int x = 0; x < canvas.getWidth() / cellWidth; x++) {
-                gc.strokeRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-                cells[y][x] = new Cell(cellWidth, cellHeight, x * cellWidth, y * cellHeight);
+        for (int y = 0; y < canvas.getHeight() / cellSize; y++) {
+            for (int x = 0; x < canvas.getWidth() / cellSize; x++) {
+                gc.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                cells[y][x] = new Cell(cellSize, cellSize, x * cellSize, y * cellSize);
             }
         }
     }
@@ -166,8 +165,8 @@ public class GameOfLife extends Application {
      * If the cell isn't marked for filled, the cell will be emptied.
      */
     void convertCells() {
-        for (int y = 0; y < canvas.getHeight() / cellHeight; y++) {
-            for (int x = 0; x < canvas.getWidth() / cellWidth; x++) {
+        for (int y = 0; y < canvas.getHeight() / cellSize; y++) {
+            for (int x = 0; x < canvas.getWidth() / cellSize; x++) {
                 Cell cell = cells[y][x];
 
                 if (cell.markedFilled) {
@@ -184,8 +183,8 @@ public class GameOfLife extends Application {
      * (The cells have their own check)
      */
     void checkCells() {
-        for (int y = 0; y < canvas.getHeight() / cellHeight; y++) {
-            for (int x = 0; x < canvas.getWidth() / cellWidth; x++) {
+        for (int y = 0; y < canvas.getHeight() / cellSize; y++) {
+            for (int x = 0; x < canvas.getWidth() / cellSize; x++) {
                 cells[y][x].checkCell(gc);
             }
         }
@@ -196,8 +195,8 @@ public class GameOfLife extends Application {
      * (Marks all the cells for empty and then runs the convertCells() method)
      */
     void resetCells() {
-        for (int y = 0; y < canvas.getHeight() / cellHeight; y++) {
-            for (int x = 0; x < canvas.getWidth() / cellWidth; x++) {
+        for (int y = 0; y < canvas.getHeight() / cellSize; y++) {
+            for (int x = 0; x < canvas.getWidth() / cellSize; x++) {
                 cells[y][x].markForEmpty();
             }
         }
