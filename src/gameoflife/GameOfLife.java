@@ -24,8 +24,8 @@ import javafx.stage.Stage;
  */
 public class GameOfLife extends Application {
 
-    public static final byte CELL_SIZE = 8;    // Size of the cells.
-    final int GENERATION_SPEED = 5;    // The time between each generation. (Depends on the system speed)
+    public static final byte CELL_SIZE = 10;    // Size of the cells.
+    final int GENERATION_SPEED = 1;    // The time between each generation. (Depends on the system speed)
 
     static Cell[][] cells;  // Where we will store all the cells as a grid.
 
@@ -56,7 +56,7 @@ public class GameOfLife extends Application {
 
         // Create necessary JavaFX components for the simulation.
         root = new Group();              // The group of where we will store our components.
-        canvas = new Canvas(600, 600); // The canvas to draw on. This will also act as the window.
+        canvas = new Canvas(1200, 800); // The canvas to draw on. This will also act as the window.
         gc = canvas.getGraphicsContext2D(); // A class to draw shapes.
 
         // Create the cell array - with a length based on the
@@ -136,12 +136,10 @@ public class GameOfLife extends Application {
         for (int y = 0; y < canvas.getHeight() / CELL_SIZE; y++) {
             for (int x = 0; x < canvas.getWidth() / CELL_SIZE; x++) {
                 gc.strokeRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                cells[y][x] = new Cell(CELL_SIZE, CELL_SIZE, x * CELL_SIZE, y * CELL_SIZE);
+                cells[y][x] = new Cell(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
             }
         }
     }
-    
-    
 
     /**
      * The main loop of the program. From here all the cells are checked for

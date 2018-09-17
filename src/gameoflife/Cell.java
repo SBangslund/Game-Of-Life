@@ -11,8 +11,10 @@ import javafx.scene.paint.Color;
  * individually.
  */
 public class Cell {
-    int xPos        = 0;    // The xPosition of the cell. (In px)
-    int yPos        = 0;    // The yPosition of the cell. (In px)
+
+    int size;    // The sise of the cell.
+    int xPos;    // The xPosition of the cell. (In px)
+    int yPos;    // The yPosition of the cell. (In px)
 
     boolean markedFilled = false;   // Whether or not the cell is marked.
     boolean isFilled = false;       // Whether or not the cell is filled.
@@ -20,22 +22,24 @@ public class Cell {
     Canvas canvas;  // Canvas for global access.
 
     /**
-     * The cell object.  
-     * @param width of the cell.
-     * @param height of the cell.
+     * The cell object.
+     *
      * @param x position of the cell. (In px)
      * @param y position of the cell. (In px)
+     * @param size of the cell. (In px)
      */
-    public Cell(int width, int height, int x, int y) {
+    public Cell(int x, int y, int size) {
         setXPos(x);
         setYPos(y);
+        setSize(size);
 
         canvas = GameOfLife.canvas; // Creates a reference to the main class.
     }
 
     /**
-     * Apply all the rules for the cell. This is based on the
-     * number of neighbours counted in the countNeighbours() method.
+     * Apply all the rules for the cell. This is based on the number of
+     * neighbours counted in the countNeighbours() method.
+     *
      * @param gc the GraphicsContext object.
      */
     public void checkCell(GraphicsContext gc) {
@@ -58,6 +62,7 @@ public class Cell {
 
     /**
      * Fill the cell.
+     *
      * @param gc the GraphicContext object.
      */
     public void fillCell(GraphicsContext gc) {
@@ -70,6 +75,7 @@ public class Cell {
 
     /**
      * Empties the cell.
+     *
      * @param gc the GraphicsContext object.
      */
     public void emptyCell(GraphicsContext gc) {
@@ -83,9 +89,10 @@ public class Cell {
         isFilled = false;
         gc.restore();
     }
-    
+
     /**
      * Converts the cell depending on if the cell is marked for fill or not.
+     *
      * @param gc the GraphicsContext object.
      */
     public void convertCell(GraphicsContext gc) {
@@ -98,6 +105,7 @@ public class Cell {
 
     /**
      * Counts the number of neighbours around the cell. (3x3)
+     *
      * @return number of neighbours.
      */
     public int countNeighbours() {
@@ -108,8 +116,8 @@ public class Cell {
             for (int x = getLocalX() - 1; x <= getLocalX() + 1; x++) {
                 // Ignore if the cell to check is itself.
                 if (y == getLocalY() && x == getLocalX()) {
-                
-                // Ignore if the cell to check is out of limits.
+
+                    // Ignore if the cell to check is out of limits.
                 } else if (y < 0 || y > canvas.getHeight() / getSize() - 1 || x < 0 || x > canvas.getWidth() / getSize() - 1) {
                 } else {
                     // Increments the number of neighbours if a live cell is
@@ -141,24 +149,33 @@ public class Cell {
     private void setXPos(int x) {
         xPos = x;
     }
+
     private void setYPos(int y) {
         yPos = y;
+    }
+
+    private void setSize(int size) {
+        this.size = size;
     }
 
     // Getters
     int getGlobalX() {
         return xPos;
     }
+
     int getGlobalY() {
         return yPos;
     }
+
     int getLocalX() {
-        return xPos / GameOfLife.CELL_SIZE;
+        return xPos / size;
     }
+
     int getLocalY() {
-        return yPos / GameOfLife.CELL_SIZE;
+        return yPos / size;
     }
+
     int getSize() {
-        return GameOfLife.CELL_SIZE;
+        return size;
     }
 }
